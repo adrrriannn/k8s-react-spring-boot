@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.adrrriannn.store</groupId>
+    <artifactId>indexing</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Store indexing service</name>
+    <description>Indexing service for store sample project</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>8</java.version>
+
+        <!-- Maven Plugins (Official) -->
+        <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+
+        <!-- Maven Plugins (3rd Party) -->
+        <docker-maven-plugin.version>0.24.0</docker-maven-plugin.version>
+
+        <!--Store project dependencies-->
+        <store.dto.version>1.0.0-SNAPSHOT</store.dto.version>
+
+        <!--3rd Party libraries-->
+        <lombok.version>1.18.0</lombok.version>
+        <spring-integration-kafka.version>3.0.3.RELEASE</spring-integration-kafka.version>
+        <spring-kafka.version>2.1.10.RELEASE</spring-kafka.version>
+        <elasticsearch.version>6.4.2</elasticsearch.version>
+
+        <!-- Dockerfile Configuration -->
+        <docker.image.name>store/server/indexing</docker.image.name>
+        <docker.java.home.dir>/usr/indexing/</docker.java.home.dir>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-integration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-kafka</artifactId>
+            <version>${spring-integration-kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>${spring-kafka.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adrrriannn.store</groupId>
+            <artifactId>dto</artifactId>
+            <version>${store.dto.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--Test-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <version>${spring-kafka.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+                <configuration>
+                    <skipPush>true</skipPush>
+                    <images>
+                        <image>
+                            <name>${docker.image.name}</name>
+                            <build>
+                                <dockerFile>Dockerfile</dockerFile>
+                                <assembly>
+                                    <name>assets</name>
+                                    <inline xmlns="http://maven.apache.org/ASSEMBLY/2.0.0" xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+                                        <includeBaseDirectory>false</includeBaseDirectory>
+                                        <files>
+                                            <file>
+                                                <source>${project.build.directory}/${project.artifactId}.jar</source>
+                                                <outputDirectory>${docker.java.home.dir}</outputDirectory>
+                                            </file>
+                                        </files>
+                                    </inline>
+                                </assembly>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>stable</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>prepare-docker-image-src</id>
+                        <goals>
+                            <goal>source</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
