@@ -1,4 +1,4 @@
-FROM jre-alpine:8
+FROM openjdk:8-jre-alpine
 
 EXPOSE 8000
 
@@ -6,5 +6,4 @@ COPY assets/ /
 
 CMD ["/usr/bin/java", \
      "-jar", \
-     "/usr/k8s-spring-boot/k8s-spring-boot.jar", \
-     "--spring.config.location=/etc/k8s-spring-boot/config/application.properties"]
+     "/usr/order/order.jar"]
