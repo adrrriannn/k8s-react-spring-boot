@@ -6,4 +6,5 @@ COPY assets/ /
 
 CMD ["/usr/bin/java", \
      "-jar", \
-     "/usr/order/order.jar"]
+     "/usr/order/order.jar", \
+     "--spring.config.location=/etc/order/config/application.properties"]
