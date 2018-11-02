@@ -1,6 +1,6 @@
-package com.adrrriannn.store.order.config;
+package com.adrrriannn.store.product.config;
 
-import com.adrrriannn.store.dto.OrderDto;
+import com.adrrriannn.store.dto.ProductDto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +34,7 @@ public class KafkaConfiguration {
     @Bean
     @ServiceActivator(inputChannel = "producingChannel")
     public MessageHandler kafkaMessageHandler() {
-        KafkaProducerMessageHandler<String, OrderDto> handler =
+        KafkaProducerMessageHandler<String, ProductDto> handler =
                 new KafkaProducerMessageHandler<>(kafkaTemplate());
         handler.setMessageKeyExpression(new LiteralExpression("kafka-integration"));
 
@@ -42,12 +42,12 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public KafkaTemplate<String, OrderDto> kafkaTemplate() {
+    public KafkaTemplate<String, ProductDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
     @Bean
-    public ProducerFactory<String, OrderDto> producerFactory() {
+    public ProducerFactory<String, ProductDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 

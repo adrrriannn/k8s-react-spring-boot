@@ -10,6 +10,7 @@ public class LogNotificationService implements NotificationService {
 
     @Override
     public void sendNotification(OrderDto orderDto) {
-        log.info("Notification generated for Order: {}", orderDto);
+//        log.info("Notification generated for Order: {}", orderDto);
+        System.out.println("Notification generated for Order: " + orderDto);
     }
 }

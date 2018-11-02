@@ -3,13 +3,14 @@ package com.adrrriannn.store.indexing.service;
 import com.adrrriannn.store.dto.ProductDto;
 import com.adrrriannn.store.indexing.repository.elasticsearch.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHandler;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessagingException;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-public class ProductMessageHandler implements MessageHandler {
+@Component
+public class ProductMessageHandler {
 
     private ProductRepository productRepository;
 
@@ -18,12 +19,11 @@ public class ProductMessageHandler implements MessageHandler {
         this.productRepository = productRepository;
     }
 
-    @Override
-    public void handleMessage(Message<?> message) throws MessagingException {
+    @KafkaListener(topics="${kafka.topic.index-product}")
+    public void handleMessage(ProductDto productDto) throws MessagingException {
 
-        Object object = message.getPayload();
         try {
-            productRepository.save((ProductDto) object);
+            productRepository.save(productDto);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

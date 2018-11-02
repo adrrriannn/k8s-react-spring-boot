@@ -1,74 +1,47 @@
 package com.adrrriannn.store.indexing.config;
 
-import com.adrrriannn.store.indexing.repository.elasticsearch.ProductRepository;
-import com.adrrriannn.store.indexing.service.ProductMessageHandler;
+import com.adrrriannn.store.dto.ProductDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.kafka.inbound.KafkaMessageDrivenChannelAdapter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
-import org.springframework.kafka.listener.config.ContainerProperties;
-import org.springframework.messaging.MessageHandler;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
+@Configuration
 public class KafkaConfiguration {
 
-    @Value("${kafka.bootstrap-servers}")
+    @Value("${kafka.server}")
     private String bootstrapServers;
 
-    @Value("${kafka.topic.spring-integration-kafka}")
-    private String springIntegrationKafkaTopic;
+    @Value("${kafka.consumer.group-id}")
+    private String groupId;
 
     @Bean
-    public DirectChannel consumingChannel() {
-        return new DirectChannel();
+    public ConsumerFactory<String, ProductDto> consumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        log.info("group id : {}", groupId);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        return new DefaultKafkaConsumerFactory<>(props,
+                new StringDeserializer(),
+                new JsonDeserializer<>(ProductDto.class));
     }
 
     @Bean
-    public KafkaMessageDrivenChannelAdapter<String, String> kafkaMessageDrivenChannelAdapter() {
-        KafkaMessageDrivenChannelAdapter<String, String> kafkaMessageDrivenChannelAdapter =
-                new KafkaMessageDrivenChannelAdapter<>(kafkaListenerContainer());
-        kafkaMessageDrivenChannelAdapter.setOutputChannel(consumingChannel());
-
-        return kafkaMessageDrivenChannelAdapter;
-    }
-
-    @Bean
-    @ServiceActivator(inputChannel = "consumingChannel")
-    public MessageHandler orderMessageListener(ProductRepository productRepository) {
-        return new ProductMessageHandler(productRepository);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Bean
-    public ConcurrentMessageListenerContainer<String, String> kafkaListenerContainer() {
-        ContainerProperties containerProps = new ContainerProperties(springIntegrationKafkaTopic);
-
-        return new ConcurrentMessageListenerContainer(consumerFactory(), containerProps);
-    }
-
-    @Bean
-    public ConsumerFactory<?, ?> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
-    }
-
-    @Bean
-    public Map<String, Object> consumerConfigs() {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "spring-integration");
-        // automatically reset the offset to the earliest offset
-        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-
-        return properties;
+    public ConcurrentKafkaListenerContainerFactory<String, ProductDto> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ProductDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        return factory;
     }
 }

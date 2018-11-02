@@ -6,4 +6,5 @@ COPY assets/ /
 
 CMD ["/usr/bin/java", \
      "-jar", \
-     "/usr/notification/notification.jar"]
+     "/usr/notification/notification.jar", \
+     "--spring.config.location=/etc/notification/config/application.properties"]
