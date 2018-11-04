@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3'
 
 services:
   storedb:
@@ -17,9 +17,7 @@ services:
       POSTGRES_PASSWORD: "adrrriannn"
 #    volumes:
 #    - ${PWD}/db-scripts:/docker-entrypoint-initdb.d
-    networks:
-    - store-network
-  messagebroker:
+  kafka:
     image: spotify/kafka
     container_name: kafka
     ports:
@@ -27,23 +25,17 @@ services:
     - "2181:2181"
     environment:
       TEST: "256"
-    networks:
-    - store-network
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
     container_name: elasticsearch
     ports:
     - "9200:9200"
     - "9300:9300"
-    networks:
-    - store-network
   notification:
     image: store/server/notification
     container_name: notification
     ports:
     - "9001:8080"
-    networks:
-    - store-network
   order:
     image: store/server/order
     container_name: order
@@ -51,8 +43,6 @@ services:
     - storedb
     ports:
     - "9002:8080"
-    networks:
-    - store-network
   product:
     image: store/server/product
     container_name: product
@@ -60,15 +50,8 @@ services:
     - storedb
     ports:
     - "9003:8080"
-    networks:
-    - store-network
   indexing:
     image: store/server/indexing
     container_name: indexing
     ports:
     - "9004:8080"
-    networks:
-    - store-network
-networks:
-  store-network:
-    driver: bridge
