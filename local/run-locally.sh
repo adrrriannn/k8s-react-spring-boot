@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mvn -f ../server/dto/pom.xml clean package -Dmaven.test.skip=true
+mvn -f ../server/dto/pom.xml clean install -Dmaven.test.skip=true
 
 mvn -f ../server/indexing/pom.xml clean package -Dmaven.test.skip=true docker:build
 

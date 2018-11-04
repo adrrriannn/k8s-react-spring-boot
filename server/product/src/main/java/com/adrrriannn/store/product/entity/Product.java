@@ -11,7 +11,9 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Getter
 @EqualsAndHashCode
@@ -35,5 +37,10 @@ public class Product {
 
     @Column
     private Integer stock;
+
+    @PrePersist
+    private void setId() {
+        id = UUID.randomUUID().toString();
+    }
 }
 
