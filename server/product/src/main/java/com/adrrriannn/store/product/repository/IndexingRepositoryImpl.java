@@ -6,6 +6,7 @@ import com.adrrriannn.store.product.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -37,7 +38,7 @@ public class IndexingRepositoryImpl implements IndexingRepository {
 
     @Autowired
     public IndexingRepositoryImpl(ProductMapper productMapper,
-                                  @Qualifier("producingChannel") MessageChannel messageChannel,
+                                  @Lazy @Qualifier("producingChannel") MessageChannel messageChannel,
                                   @Value("${kafka.topic.product-indexing}") String productIndexingTopic,
                                   @Value("${indexing.service.host}") String indexingServiceHost,
                                   @Value("${indexing.service.product.path}") String indexingProductPath) {

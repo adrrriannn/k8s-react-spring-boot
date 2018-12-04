@@ -10,5 +10,7 @@ mvn -f ../server/order/pom.xml clean package -Dmaven.test.skip=true docker:build
 
 mvn -f ../server/product/pom.xml clean package -Dmaven.test.skip=true docker:build
 
-#docker-compose up
+docker-compose up -d
+
+cd ../webapp && yarn start
 

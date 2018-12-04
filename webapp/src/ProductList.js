@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
-// import AppNavbar from './AppNavbar';
+import AppNavBar from './AppNavBar';
 import { Link } from 'react-router-dom';
 
 class ProductList extends Component {
@@ -13,7 +13,7 @@ class ProductList extends Component {
     componentDidMount() {
         this.setState({isLoading: true});
 
-        fetch('/products')
+        fetch('http://localhost:9003/products')
             .then(response => response.json())
             .then(data => this.setState({products: data, isLoading: false}));
     }
@@ -44,7 +44,7 @@ class ProductList extends Component {
                 <td style={{whiteSpace: 'nowrap'}}>{product.description}</td>
                 <td>
                     <ButtonGroup>
-                        <Button size="sm" color="primary" tag={Link} to={"/orders/"}>Order</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/orders?product-id=" + product.id }>Order</Button>
                         {/*<Button size="sm" color="danger" onClick={() => this.remove(group.id)}>Delete</Button>*/}
                     </ButtonGroup>
                 </td>
@@ -53,8 +53,11 @@ class ProductList extends Component {
 
         return (
             <div>
-                {/*<AppNavbar/>*/}
+                <AppNavBar/>
                 <Container fluid>
+                    <div className="float-right">
+                        <Button color="success" tag={Link} to="/products/new">Add Product</Button>
+                    </div>
                     <h3>Products</h3>
                     <Table className="mt-4">
                         <thead>

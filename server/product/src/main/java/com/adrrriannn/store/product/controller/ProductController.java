@@ -5,6 +5,7 @@ import com.adrrriannn.store.product.service.ProductService;
 import com.adrrriannn.store.product.validator.ProductValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
+@CrossOrigin
 public class ProductController {
 
     private ProductService productService;
@@ -49,5 +51,10 @@ public class ProductController {
     @GetMapping("/search")
     public List<ProductDto> searchProductsByKeywords(@RequestParam("keywords") String keywords) {
         return productService.searchProductsByKeywords(keywords);
+    }
+
+    @GetMapping
+    public List<ProductDto> getAllProducts() {
+        return productService.getAllProducts();
     }
 }

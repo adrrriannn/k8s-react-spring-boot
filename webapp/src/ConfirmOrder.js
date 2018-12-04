@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavBar from './AppNavBar';
-import 'react-toastify/dist/ReactToastify.css';
 
-class AddProduct extends Component {
+class ConfirmOrder extends Component {
 
-    emptyItem = {
+    order = {
+        email: '',
+        productId: ''
+    };
+
+    product = {
         name: '',
         description: ''
     };
@@ -14,17 +18,23 @@ class AddProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: this.emptyItem
+            item: this.order
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     async componentDidMount() {
-        if (this.props.match.params.id !== 'new') {
-            const product = await (await fetch(`/products/${this.props.match.params.id}`)).json();
-            this.setState({item: product});
-        }
+        const search = this.props.location.search; // could be '?foo=bar'
+        const params = new URLSearchParams(search);
+        const productId = params.get('product-id');
+        const productResponse = await (await fetch(`http://localhost:9003/products/${productId}`)).json();
+        this.order.productId = productId;
+        console.log("Response product:" + productResponse);
+        this.product.name = productResponse.name;
+        this.product.description = productResponse.description;
+        console.log("This product:" + this.product);
+
     }
 
     handleChange(event) {
@@ -40,35 +50,37 @@ class AddProduct extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('http://localhost:9003/products', {
-            method: (item.id) ? 'PUT' : 'POST',
+        await fetch('http://localhost:9002/orders', {
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(item),
         });
+
         this.props.history.push('/products');
     }
 
     render() {
-        const {item} = this.state;
-        const title = <h2>{item.id ? 'Edit Product' : 'Add Product'}</h2>;
 
         return <div>
             <AppNavBar/>
             <Container>
-                {title}
+                <h2>Order Confirmation</h2>
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
-                        <Label for="name">Name</Label>
-                        <Input type="text" name="name" id="name" value={item.name || ''}
-                               onChange={this.handleChange} autoComplete="name"/>
+                        <Label for="email">Email</Label>
+                        <Input type="text" name="email" id="email"
+                               onChange={this.handleChange} autoComplete="email"/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="description">Description</Label>
-                        <Input type="text" name="description" id="description" value={item.description || ''}
-                               onChange={this.handleChange} autoComplete="description"/>
+                        <Label for="product_description">Description</Label>
+                        <Input type="text" name="product_description" id="product_description" value={this.product.description} readOnly/>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="product_name">Product Name</Label>
+                        <Input type="text" name="product_name" id="product_name" value={this.product.name} readOnly/>
                     </FormGroup>
                     <FormGroup>
                         <Button color="primary" type="submit">Save</Button>{' '}
@@ -80,4 +92,4 @@ class AddProduct extends Component {
     }
 }
 
-export default withRouter(AddProduct);
+export default withRouter(ConfirmOrder);

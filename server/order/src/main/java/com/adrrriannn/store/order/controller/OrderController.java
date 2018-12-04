@@ -1,11 +1,13 @@
 package com.adrrriannn.store.order.controller;
 
 import com.adrrriannn.store.dto.OrderDto;
+import com.adrrriannn.store.order.exception.ProductNotFoundException;
 import com.adrrriannn.store.order.service.OrderService;
 import com.adrrriannn.store.order.validator.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
+@CrossOrigin
 public class OrderController {
 
     private OrderService orderService;
@@ -36,7 +39,7 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDto createOrder(@RequestBody @Valid OrderDto order) {
+    public OrderDto createOrder(@RequestBody @Valid OrderDto order) throws ProductNotFoundException {
         return orderService.processOrder(order);
     }
 

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -21,4 +22,8 @@ public class OrderDto {
     private String id;
     private String email;
     private String productId;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Setter
+    private ProductDto productDto;
 }

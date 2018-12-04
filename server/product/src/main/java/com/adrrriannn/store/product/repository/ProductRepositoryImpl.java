@@ -36,4 +36,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         return product;
     }
+
+    @Override
+    public List<Product> findAll() {
+        return productJpaRepository.findAll();
+    }
 }

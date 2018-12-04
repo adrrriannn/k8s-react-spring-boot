@@ -10,4 +10,5 @@ public interface ProductService {
     ProductDto save(ProductDto productDto);
     ProductDto getProductById(String id);
     List<ProductDto> searchProductsByKeywords(String keywords);
+    List<ProductDto> getAllProducts();
 }

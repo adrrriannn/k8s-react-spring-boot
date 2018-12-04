@@ -7,7 +7,7 @@ services:
     ports:
     - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U adrrriannn -d adrrriannn"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -15,6 +15,8 @@ services:
       POSTGRES_DB: "store"
       POSTGRES_USER: "adrrriannn"
       POSTGRES_PASSWORD: "adrrriannn"
+    networks:
+    - store-network
 #    volumes:
 #    - ${PWD}/db-scripts:/docker-entrypoint-initdb.d
   kafka:
@@ -25,17 +27,23 @@ services:
     - "2181:2181"
     environment:
       TEST: "256"
+    networks:
+    - store-network
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
     container_name: elasticsearch
     ports:
     - "9200:9200"
     - "9300:9300"
+    networks:
+    - store-network
   notification:
     image: store/server/notification
     container_name: notification
     ports:
     - "9001:8080"
+    networks:
+    - store-network
   order:
     image: store/server/order
     container_name: order
@@ -43,6 +51,8 @@ services:
     - storedb
     ports:
     - "9002:8080"
+    networks:
+    - store-network
   product:
     image: store/server/product
     container_name: product
@@ -50,8 +60,15 @@ services:
     - storedb
     ports:
     - "9003:8080"
+    networks:
+    - store-network
   indexing:
     image: store/server/indexing
     container_name: indexing
     ports:
     - "9004:8080"
+    networks:
+    - store-network
+networks:
+  store-network:
+    driver: bridge

@@ -9,4 +9,5 @@ public interface ProductRepository {
     Product findById(String id);
     List<Product> findByKeywords(String keywords);
     Product save(Product product);
+    List<Product> findAll();
 }
