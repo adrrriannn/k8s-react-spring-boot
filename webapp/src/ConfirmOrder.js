@@ -28,7 +28,7 @@ class ConfirmOrder extends Component {
         const search = this.props.location.search; // could be '?foo=bar'
         const params = new URLSearchParams(search);
         const productId = params.get('product-id');
-        const productResponse = await (await fetch(`http://localhost:9003/products/${productId}`)).json();
+        const productResponse = await (await fetch(`/products/${productId}`)).json();
         this.order.productId = productId;
         console.log("Response product:" + productResponse);
         this.product.name = productResponse.name;
@@ -50,7 +50,7 @@ class ConfirmOrder extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('http://localhost:9002/orders', {
+        await fetch('/orders', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

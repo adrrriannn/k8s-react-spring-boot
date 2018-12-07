@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavBar from './AppNavBar';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 
 class AddProduct extends Component {
 
@@ -22,7 +22,7 @@ class AddProduct extends Component {
 
     async componentDidMount() {
         if (this.props.match.params.id !== 'new') {
-            const product = await (await fetch(`/products/${this.props.match.params.id}`)).json();
+            const product = await (await fetch(`http://localhost:9003/products/${this.props.match.params.id}`)).json();
             this.setState({item: product});
         }
     }
@@ -40,7 +40,7 @@ class AddProduct extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('http://localhost:9003/products', {
+        await fetch('/products', {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
