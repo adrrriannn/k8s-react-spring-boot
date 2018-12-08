@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -10,7 +11,7 @@ spec:
         app: kafka
     spec:
       containers:
-      - name: kafka
+      - name: web
         image: spotify/kafka
         imagePullPolicy: IfNotPresent
         env:
@@ -21,3 +22,14 @@ spec:
         resources:
           limits:
             memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka
+spec:
+  ports:
+  - port: 9092
+    targetPort: 9092
+  selector:
+    app: kafka

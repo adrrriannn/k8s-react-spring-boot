@@ -1,0 +1,36 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: product
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: product
+      annotations:
+        prometheus.io/scrape: 'true'
+    spec:
+      containers:
+      - name: product
+        image: store/server/product
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+spec:
+  ports:
+  - nodePort: 31003
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: product
+  type: NodePort

@@ -1,0 +1,36 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: storedb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: storedb
+    spec:
+      containers:
+      - name: storedb
+        image: postgres:9.6-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: store
+        - name: POSTGRES_PASSWORD
+          value: adrrriannn
+        - name: POSTGRES_USER
+          value: adrrriannn
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storedb
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: storedb

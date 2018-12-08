@@ -1,0 +1,50 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webnginx
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webnginx
+    spec:
+      containers:
+      - name: webnginx
+        image: store/fe/nginx
+        imagePullPolicy: IfNotPresent
+
+#        lifecycle:
+#          preStop:
+#            exec:
+#              command:
+#              - "/usr/sbin/nginx"
+#              - "-s"
+#              - "quit"
+
+        ports:
+          - containerPort: 80
+
+#        readinessProbe:
+#          initialDelaySeconds: 1
+#          httpGet:
+#            port: 8680
+#            path: /health-check
+
+        resources:
+          limits:
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webnginx
+spec:
+  ports:
+  - nodePort: 32000
+    port: 80
+    targetPort: 80
+  selector:
+    app: webnginx
+  type: NodePort
