@@ -40,8 +40,8 @@
         <!-- Dockerfile Configuration -->
         <docker.image.name>store/server/order</docker.image.name>
         <docker.java.home.dir>/usr/order/</docker.java.home.dir>
-
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
