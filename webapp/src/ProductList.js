@@ -13,7 +13,7 @@ class ProductList extends Component {
     componentDidMount() {
         this.setState({isLoading: true});
 
-        fetch('/products')
+        fetch('http://localhost:9003/products')
             .then(response => response.json())
             .then(data => this.setState({products: data, isLoading: false}));
     }

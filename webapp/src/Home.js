@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import AppNavBar from './AppNavBar';
-import { Link } from 'react-router-dom';
-import { Button, Container } from 'reactstrap';
-
+import ProductList from './components/ProductsList';
+import ProductContainer from './containers/ProductsContainer'
 class Home extends Component {
     render() {
         return (
             <div>
-                <AppNavBar/>
-                <Container fluid>
-                    <Button color="link"><Link to="/products">Products</Link></Button>
-                </Container>
+                <ProductContainer/>
             </div>
         );
     }

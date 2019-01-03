@@ -20,7 +20,7 @@ public class UserDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
-    private String name;
+    private String firstname;
     private String surname;
     private String email;
 }
