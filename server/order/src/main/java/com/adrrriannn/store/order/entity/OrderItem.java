@@ -8,17 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -28,18 +24,22 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "order_item")
+public class OrderItem {
 
     @Id
     @Column
     private String id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
-    private List<OrderItem> items = new ArrayList<>();
+    @JoinColumn(name = "parent", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Order parent;
 
-    @Column
-    private String userId;
+    @Column(nullable = false)
+    private String productId;
+
+    @Column(nullable = false)
+    private int quantity;
 
     @PrePersist
     private void setId() {

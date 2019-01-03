@@ -10,24 +10,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.List;
-
 @Getter
 @EqualsAndHashCode
 @ToString
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderDto {
+public class OrderItemDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
 
     @Setter
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private UserDto user;
+    private ProductDto product;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Setter
-    private List<OrderItemDto> items;
+    private int quantity;
 }

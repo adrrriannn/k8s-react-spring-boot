@@ -1,6 +1,6 @@
 package com.adrrriannn.store.order.exception;
 
-public class ProductNotFoundException extends Exception {
+public class ProductNotFoundException extends RuntimeException {
 
     private static final String MESSAGE = "Product not found for id : %s";
 

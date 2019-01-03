@@ -11,8 +11,6 @@ import lombok.ToString;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -28,17 +26,17 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "cart")
+public class Cart {
 
     @Id
     @Column
     private String id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
-    private List<OrderItem> items = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    private List<CartItem> items = new ArrayList<>();
 
-    @Column
+    @Column(nullable = false)
     private String userId;
 
     @PrePersist

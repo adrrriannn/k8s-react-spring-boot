@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderDto {
+public class CartDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
@@ -29,5 +29,5 @@ public class OrderDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Setter
-    private List<OrderItemDto> items;
+    private List<CartItemDto> items;
 }

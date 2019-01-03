@@ -34,7 +34,6 @@ public class ProductServiceImplTest {
     private ProductDto productDto = ProductDto.builder()
             .name("Product")
             .description("Description")
-            .stock(123)
             .build();
 
     private Product product = Product.builder()
