@@ -33,7 +33,6 @@ public class ProductControllerTest {
             .id("id")
             .name("Product name")
             .description("This is a product description")
-            .stock(20)
             .build();
 
     @Before

@@ -77,6 +77,13 @@ services:
     - "9004:8080"
     networks:
     - store-network
+  auth:
+    image: store/server/auth
+    container_name: auth
+    ports:
+    - "9005:8080"
+    networks:
+    - store-network
 networks:
   store-network:
     driver: bridge
