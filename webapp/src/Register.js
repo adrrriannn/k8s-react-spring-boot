@@ -61,7 +61,7 @@ export default class Register extends Component {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('http://localhost:9005/users/sign-in', {
+        await fetch('http://localhost:8080/users/sign-in', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -82,7 +82,7 @@ export default class Register extends Component {
         const {item} = this.state;
         return (
             <div>
-                <AppNavBar/>
+                {/*<AppNavBar/>*/}
                 <Container fluid>
                     <div className="Login">
                         <form onSubmit={this.handleSubmit}>

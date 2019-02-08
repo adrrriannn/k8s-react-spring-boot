@@ -24,7 +24,7 @@ export default class Login extends Component {
     }
 
     validateForm() {
-        return this.state.credentials.email.length > 0 && this.state.credentials.password.length > 0;
+        return this.state.item.email.length > 0 && this.state.item.password.length > 0;
     }
 
     handleChange(event) {
@@ -46,17 +46,15 @@ export default class Login extends Component {
                 break;
             }
         }
-
-        setJwtToken(signInObject.token);
-        this.setState({ authenticated: true });
-        this.setState({ loginSuccessful: true });
+        console.log("Sending token to app: " + signInObject.token);
+        this.props.saveToken(signInObject.token);
     }
 
     async handleSubmit(event) {
         event.preventDefault();
         const {item} = this.state;
 
-        await fetch('http://localhost:9005/users/login', {
+        await fetch('http://localhost:8080/users/login', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -66,10 +64,11 @@ export default class Login extends Component {
         })
         .then((response) => {
             this.handleLoginSuccess(response.body);
-            this.props.history.push('/products');
+            // this.props.history.push('/products');
+            window.location.href = '/products';
         })
         .catch(err => {
-            throw new SubmissionError({ _error: "Error logging in." + err })
+            console.log("Error logging in: " + err);
         });
     }
 
@@ -77,7 +76,7 @@ export default class Login extends Component {
         const {item} = this.state;
         return (
             <div>
-                <AppNavBar/>
+                {/*<AppNavBar/>*/}
                 <Container fluid>
                     <div className="Login">
                         <form onSubmit={this.handleSubmit}>

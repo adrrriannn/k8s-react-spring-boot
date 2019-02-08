@@ -11,7 +11,7 @@ export default class ProductsList extends Component {
     const { products, addToCart } = this.props
     return (
       <div>
-        <AppNavBar/>
+        {/*<AppNavBar/>*/}
         <div className="productListWrapper">
           {products.map(product => (
             <ProductItem

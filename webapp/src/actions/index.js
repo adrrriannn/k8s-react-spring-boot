@@ -14,11 +14,11 @@ export const fetchAllDummyItems = () => dispatch => {
   })
 }
 
-export const fetchProducts = () => dispatch => {
-    shop.getProducts(products => {
-        dispatch
-    })
-}
+// export const fetchProducts = () => dispatch => {
+//     shop.getProducts(products => {
+//         dispatch
+//     })
+// }
 
 
 export const addToCart = productId => (dispatch, getState) => {
