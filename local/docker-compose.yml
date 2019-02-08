@@ -45,45 +45,45 @@ services:
     - "443:443"
     networks:
     - store-network
-#  notification:
-#    image: store/server/notification
-#    container_name: notification
-#    ports:
-#    - "9001:8080"
-#    networks:
-#    - store-network
-#  order:
-#    image: store/server/order
-#    container_name: order
-#    depends_on:
-#    - storedb
-#    ports:
-#    - "9002:8080"
-#    networks:
-#    - store-network
-#  product:
-#    image: store/server/product
-#    container_name: product
-#    depends_on:
-#    - storedb
-#    ports:
-#    - "9003:8080"
-#    networks:
-#    - store-network
-#  indexing:
-#    image: store/server/indexing
-#    container_name: indexing
-#    ports:
-#    - "9004:8080"
-#    networks:
-#    - store-network
-#  auth:
-#    image: store/server/auth
-#    container_name: auth
-#    ports:
-#    - "9005:8080"
-#    networks:
-#    - store-network
+  notification:
+    image: store/server/notification
+    container_name: notification
+    ports:
+    - "9001:8080"
+    networks:
+    - store-network
+  order:
+    image: store/server/order
+    container_name: order
+    depends_on:
+    - storedb
+    ports:
+    - "9002:8080"
+    networks:
+    - store-network
+  product:
+    image: store/server/product
+    container_name: product
+    depends_on:
+    - storedb
+    ports:
+    - "9003:8080"
+    networks:
+    - store-network
+  indexing:
+    image: store/server/indexing
+    container_name: indexing
+    ports:
+    - "9004:8080"
+    networks:
+    - store-network
+  auth:
+    image: store/server/auth
+    container_name: auth
+    ports:
+    - "9005:8080"
+    networks:
+    - store-network
 networks:
   store-network:
     driver: bridge

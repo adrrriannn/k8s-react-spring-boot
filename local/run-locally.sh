@@ -12,6 +12,6 @@ mvn -f ../server/product/pom.xml clean package -Dmaven.test.skip=true docker:bui
 
 mvn -f ../server/auth/pom.xml clean package -Dmaven.test.skip=true docker:build
 
-#sh build-web-nginx.sh
+sh build-web-nginx.sh
 
 docker-compose up
