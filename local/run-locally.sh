@@ -2,6 +2,8 @@
 
 mvn -f ../server/dto/pom.xml clean install -Dmaven.test.skip=true
 
+mvn -f ../server/security/pom.xml clean install -Dmaven.test.skip=true
+
 mvn -f ../server/indexing/pom.xml clean package -Dmaven.test.skip=true docker:build
 
 mvn -f ../server/notification/pom.xml clean package -Dmaven.test.skip=true docker:build
