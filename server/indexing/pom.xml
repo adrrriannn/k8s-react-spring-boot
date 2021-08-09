@@ -36,7 +36,7 @@
         <lombok.version>1.18.0</lombok.version>
         <spring-integration-kafka.version>3.0.3.RELEASE</spring-integration-kafka.version>
         <spring-kafka.version>2.1.10.RELEASE</spring-kafka.version>
-        <elasticsearch.version>6.4.2</elasticsearch.version>
+        <elasticsearch.version>6.8.17</elasticsearch.version>
 
         <!-- Dockerfile Configuration -->
         <docker.image.name>store/server/indexing</docker.image.name>
